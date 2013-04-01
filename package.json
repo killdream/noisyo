@@ -1,6 +1,6 @@
 {
   "name": "noisyo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Drinks and vomits Stream contents. Promised to be really noisy.",
   "main": "./lib/index.js",
   "devDependencies": {
@@ -40,6 +40,7 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "pinky": "~0.1.2"
+    "pinky": "~0.1.2",
+    "pinky-combinators": "~0.1.1"
   }
 }

@@ -13,18 +13,20 @@ general :D
 
 ```js
 var noisyo = require('noisyo')
+var spit   = noisyo.spit
+var slurp  = noisyo.slurp
 
 // Slurp takes a Stream and returns a Promise of its contents.
 // Spit takes a Stream, and some contents, and returns a Promise of the
 // eventual draining.
-noisyo.slurp(process.stdin).then(noisyo.spit(process.stdout))
+spit(process.stdout, slurp(process.stdin))
 
 // So, why not just `.pipe()` you faggot?
 // Well, these work with both Strings and Streams interchangeably.
-var input = noisyo.slurp(process.stdin)
+var input = slurp(process.stdin)
 input.then(function(data) {
   console.log(data)
-  noisyo.spit(fs.createWriteStream('foo.txt'), data)
+  spit(fs.createWriteStream('foo.txt'), data)
 })
 
 // Obviously, you *will* want to use Streams directly if you're interested in

@@ -26,6 +26,7 @@
 
 ### -- Dependencies ----------------------------------------------------
 pinky = require 'pinky'
+{all} = require 'pinky-combinators'
 stream = require 'stream'
 
 
@@ -100,29 +101,29 @@ write-to = (dest, source, encoding) ->
 #### λ slurp
 # Drains the contents of a Stream and returns a promise for it.
 #
-# :: Stream -> Promise String Error
-slurp = (source) ->
+# :: Promise Stream a -> Promise String Error
+slurp = (source-p) ->
   promise = pinky!
-  data    = (source.read! || '').to-string!
+  data    = ''
 
-  source.on 'readable' grab-chunk
-  source.on 'error' handle-failure
-  source.on 'end' fulfill
-  source.on 'end' clean-up
+  (pinky source-p).then (source) ->
+    data := ((source.read 0) or '').to-string!
+
+    source.on 'readable' (grab-chunk source)
+    source.on 'end' fulfill
+    source.on 'end' (clean-up source)
 
   return promise
 
-  function grab-chunk()
+
+  function grab-chunk(source) => ->
     chunk = source.read!
     if chunk isnt null => data += chunk.to-string!
-
-  function handle-failure(err)
-    promise.reject err
 
   function fulfill()
     promise.fulfill data
 
-  function clean-up()
+  function clean-up(source) => ->
     source.remove-listener 'readable' grab-chunk
     source.remove-listener 'end' fulfill
     source.remove-listener 'end' clean-up
@@ -131,13 +132,19 @@ slurp = (source) ->
 #### λ spit
 # Vomits some contents (String or Stream) into a Stream.
 #
-# :: Stream -> String -> Promise Stream Error
-# :: Stream -> Stream -> Promise Stream Error
-spit = (dest, source) -->
-  | is-stream source => pipe-from source, dest
-  | otherwise        => write-to dest, source, arguments[2]
+# :: Promise Stream a -> Promise String a -> Promise Stream Error
+# :: Promise Stream a -> Promise Stream a -> Promise Stream Error
+spit = (dest-p, source-p) -->
+  promise = pinky!
 
+  all [dest-p, source-p] .then ([dest, source]) ->
+    p2 = switch
+    | is-stream source => pipe-from source, dest
+    | otherwise        => write-to dest, source, arguments[2]
 
+    p2.then promise.fulfill, promise.reject
+
+  return promise
 
 
 ### -- Exports ---------------------------------------------------------
