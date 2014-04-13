@@ -1,4 +1,9 @@
-# Noisyo [![Build Status](https://travis-ci.org/killdream/noisyo.png)](https://travis-ci.org/killdream/noisyo) ![Dependencies Status](https://david-dm.org/killdream/noisyo.png)
+# Noisyo 
+
+[![Build Status](https://secure.travis-ci.org/robotlolita/noisyo.png?branch=master)](https://travis-ci.org/robotlolita/noisyo)
+[![NPM version](https://badge.fury.io/js/noisyo.png)](http://badge.fury.io/js/noisyo)
+[![Dependencies Status](https://david-dm.org/robotlolita/noisyo.png)](https://david-dm.org/robotlolita/noisyo)
+[![stable](http://hughsk.github.io/stability-badges/dist/stable.svg)](http://github.com/hughsk/stability-badges)
 
 **Note that this only works in Node 0.10 now, using the new Streams.**
 
@@ -63,5 +68,5 @@ You can run all tests using Mocha:
 
 MIT/X11. ie.: do whatever you want.
 
-[Calliope]: https://github.com/killdream/calliope
+[Calliope]: https://github.com/robotlolita/calliope
 [es5-shim]: https://github.com/kriskowal/es5-shim
