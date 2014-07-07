@@ -26,7 +26,7 @@ var slurp  = noisyo.slurp
 // eventual draining.
 spit(process.stdout, slurp(process.stdin))
 
-// So, why not just `.pipe()` you faggot?
+// So, why not just `.pipe()`?
 // Well, these work with both Strings and Streams interchangeably.
 var input = slurp(process.stdin)
 input.then(function(data) {
